@@ -5,6 +5,11 @@
 </head>
 <body>
   <h1>Welcome to Jinbi Taosha</h1>
+
+  <h3>Enter Your Name</h3>
+  <input id="playerName" placeholder="Enter your name">
+
+  <h3>Host a Lobby</h3>
   <button id="hostBtn">Host Lobby</button>
 
   <h3>Or Join Existing Lobby</h3>
@@ -12,18 +17,18 @@
   <button id="joinBtn">Join Lobby</button>
 
   <script>
-        document.getElementById("hostBtn").addEventListener("click", async () => {
-        let response = await fetch("/api/create_lobby", { method: "POST" });
-        let data = await response.json();
-        // Pass role=host in the URL
-        window.location.href = "/lobby.html?code=" + data.code + "&role=host";
-        });
+    document.getElementById("hostBtn").addEventListener("click", async () => {
+      let name = document.getElementById("playerName").value || "Host";
+      let response = await fetch("/api/create_lobby?name=" + encodeURIComponent(name), { method: "POST" });
+      let data = await response.json();
+      window.location.href = "/lobby.html?code=" + data.code + "&role=host&name=" + encodeURIComponent(name);
+    });
 
-        document.getElementById("joinBtn").addEventListener("click", () => {
-        let code = document.getElementById("lobbyCode").value;
-        // Pass role=player in the URL
-        window.location.href = "/lobby.html?code=" + code + "&role=player";
-        });
+    document.getElementById("joinBtn").addEventListener("click", () => {
+      let name = document.getElementById("playerName").value || "Player";
+      let code = document.getElementById("lobbyCode").value;
+      window.location.href = "/lobby.html?code=" + code + "&role=player&name=" + encodeURIComponent(name);
+    });
   </script>
 </body>
 </html>

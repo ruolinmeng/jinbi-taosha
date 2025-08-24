@@ -4,14 +4,21 @@
   <title>Lobby</title>
   <style>
     .slot {
-      width: 100px;
-      height: 100px;
+      width: 120px;
+      height: 120px;
       border: 2px solid black;
       display: inline-block;
       margin: 10px;
       text-align: center;
-      line-height: 100px;
+      line-height: 120px;
       font-weight: bold;
+      position: relative;
+    }
+    .crown {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      font-size: 20px;
     }
   </style>
 </head>
@@ -20,61 +27,65 @@
   <div id="slots"></div>
   <button id="startBtn" style="display:none;">Start Game</button>
 
-    <script>
+  <script>
     let params = new URLSearchParams(window.location.search);
     let code = params.get("code");
     let role = params.get("role");
+    let playerName = params.get("name");
 
     function renderSlots(slots) {
-        let slotsDiv = document.getElementById("slots");
-        slotsDiv.innerHTML = "";
-        slots.forEach((player, index) => {
+      let slotsDiv = document.getElementById("slots");
+      slotsDiv.innerHTML = "";
+      slots.forEach((slot, index) => {
         let div = document.createElement("div");
         div.className = "slot";
-        div.innerText = player ? player : "Empty";
-        slotsDiv.appendChild(div);
-        });
-
-        // If host and lobby full, show Start button
-        if (role === "host" && !slots.includes(null)) {
-        document.getElementById("startBtn").style.display = "block";
+        if (slot) {
+          div.innerText = slot.name;
+          if (slot.role === "host") {
+            let crown = document.createElement("div");
+            crown.className = "crown";
+            crown.innerText = "👑";
+            div.appendChild(crown);
+          }
+        } else {
+          div.innerText = "Empty";
         }
+        slotsDiv.appendChild(div);
+      });
+      if (role === "host" && slots.every(s => s !== null)) {
+        document.getElementById("startBtn").style.display = "block";
+      }
     }
 
-    // Connect to WebSocket
     let protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
     let socket = new WebSocket(protocol + window.location.host + "/ws/lobby/" + code);
 
-
     socket.onmessage = (event) => {
-        let msg = JSON.parse(event.data);
-        if (msg.event === "lobby_update") {
+      let msg = JSON.parse(event.data);
+      if (msg.event === "lobby_update") {
         renderSlots(msg.slots);
-        }
-        if (msg.event === "start_game") {
+      }
+      if (msg.event === "start_game") {
         window.location.href = msg.redirect;
-        }
+      }
     };
 
-    // Join only if player
     if (role === "player") {
-        fetch("/api/join_lobby/" + code, { method: "POST" })
+      fetch("/api/join_lobby/" + code + "?name=" + encodeURIComponent(playerName), { method: "POST" })
         .then(res => res.json())
         .then(data => {
-            if (data.error) {
+          if (data.error) {
             alert(data.error);
             window.location.href = "/";
-            }
+          }
         });
     }
 
-    // Host starts game
     document.getElementById("startBtn").onclick = async () => {
-        let res = await fetch("/api/start_game/" + code, { method: "POST" });
-        let data = await res.json();
-        if (data.error) alert(data.error);
+      let res = await fetch("/api/start_game/" + code, { method: "POST" });
+      let data = await res.json();
+      if (data.error) alert(data.error);
     };
-    </script>
-
+  </script>
 </body>
 </html>
