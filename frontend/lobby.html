@@ -42,7 +42,9 @@
     }
 
     // Connect to WebSocket
-    let socket = new WebSocket("ws://" + window.location.host + "/ws/lobby/" + code);
+    let protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
+    let socket = new WebSocket(protocol + window.location.host + "/ws/lobby/" + code);
+
 
     socket.onmessage = (event) => {
         let msg = JSON.parse(event.data);
