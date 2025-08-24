@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Jinbi Taosha</title>
+</head>
+<body>
+  <h1>Welcome to Jinbi Taosha</h1>
+  <button id="hostBtn">Host Lobby</button>
+
+  <h3>Or Join Existing Lobby</h3>
+  <input id="lobbyCode" placeholder="Enter lobby code">
+  <button id="joinBtn">Join Lobby</button>
+
+  <script>
+        document.getElementById("hostBtn").addEventListener("click", async () => {
+        let response = await fetch("/api/create_lobby", { method: "POST" });
+        let data = await response.json();
+        // Pass role=host in the URL
+        window.location.href = "/lobby.html?code=" + data.code + "&role=host";
+        });
+
+        document.getElementById("joinBtn").addEventListener("click", () => {
+        let code = document.getElementById("lobbyCode").value;
+        // Pass role=player in the URL
+        window.location.href = "/lobby.html?code=" + code + "&role=player";
+        });
+  </script>
+</body>
+</html>
