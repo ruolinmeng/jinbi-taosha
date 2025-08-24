@@ -32,6 +32,7 @@
     let code = params.get("code");
     let role = params.get("role");
     let playerName = params.get("name");
+    
 
     function renderSlots(slots) {
       let slotsDiv = document.getElementById("slots");
@@ -61,14 +62,16 @@
     let socket = new WebSocket(protocol + window.location.host + "/ws/lobby/" + code);
 
     socket.onmessage = (event) => {
-      let msg = JSON.parse(event.data);
-      if (msg.event === "lobby_update") {
+    let msg = JSON.parse(event.data);
+    if (msg.event === "lobby_update") {
         renderSlots(msg.slots);
-      }
-      if (msg.event === "start_game") {
-        window.location.href = msg.redirect;
-      }
+    }
+    if (msg.event === "start_game") {
+        // Go to attribute selection page instead of game.html
+        window.location.href = `${msg.redirect}?code=${code}&name=${encodeURIComponent(playerName)}`;
+    }
     };
+
 
     if (role === "player") {
       fetch("/api/join_lobby/" + code + "?name=" + encodeURIComponent(playerName), { method: "POST" })
@@ -82,10 +85,16 @@
     }
 
     document.getElementById("startBtn").onclick = async () => {
-      let res = await fetch("/api/start_game/" + code, { method: "POST" });
-      let data = await res.json();
-      if (data.error) alert(data.error);
+    let res = await fetch("/api/start_game/" + code, { method: "POST" });
+    let result = await res.json();
+    if (result.error) {
+        alert(result.error);
+    } else {
+        // 🚀 Redirect to attribute selection page instead of game.html
+        window.location.href = `/attributes.html?code=${code}&name=${encodeURIComponent(playerName)}`;
+    }
     };
+
   </script>
 </body>
 </html>

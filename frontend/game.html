@@ -13,7 +13,7 @@
     .map {
       position: relative;
       display: grid;
-      grid-template-columns: repeat(8, 120px);
+      grid-template-columns: repeat(9, 120px);
       grid-auto-rows: 80px;
       gap: 5px;
       background: #333;
@@ -52,11 +52,11 @@
     }
     .ladder {
       stroke: orange;
-      stroke-width: 4;
+      stroke-width: 3;
     }
     .bridge {
-      stroke: yellow;
-      stroke-width: 4;
+        background: #f9e076; /* golden color */
+        font-weight: bold;
     }
     .tunnel {
       stroke: red;
@@ -69,24 +69,63 @@
   <div class="map" id="map">
     <!-- Example rooms -->
     <div class="room special" id="201" style="grid-column: 4; grid-row: 1;">201<br>基因库</div>
-    <div class="room special" id="101" style="grid-column: 2 / span 2; grid-row: 2;">101<br>水塔</div>
-    <div class="room" id="102" style="grid-column: 4; grid-row: 2;">102<br>激光室</div>
-    <div class="room" id="B101" style="grid-column: 1; grid-row: 3;">B101<br>控制室</div>
-    <div class="room" id="B102" style="grid-column: 2; grid-row: 3;">B102<br>普通</div>
+    <div class="room special" id="101" style="grid-column: 2; grid-row: 2;">101<br>水塔</div>
+    <div class="room special" id="102" style="grid-column: 4; grid-row: 2;">102<br>激光室</div>
+    <div class="room special" id="B101" style="grid-column: 1; grid-row: 3;">B101<br>控制室</div>
+    <div class="room" id="B102" style="grid-column: 2; grid-row: 3;">B102<br></div>
     <div class="room spawn" id="B103" style="grid-column: 3; grid-row: 3;">B103<br>出生点</div>
-    
-    <div class="room" id="B104" style="grid-column: 4; grid-row: 3;">B104<br>普通</div>
-    <div class="room special" id="B105" style="grid-column: 5; grid-row: 3;">B105<br>回收站</div>
-    <div class="room" id="B205" style="grid-column: 5; grid-row: 4;">B205<br>普通</div>
-    <div class="room" id="B503" style="grid-column: 5; grid-row: 7;">B503<br>垃圾场</div>
-    <div class="room" id="B305" style="grid-column: 5; grid-row: 5;">B305<br>普通</div>
-    <div class="room" id="B304" style="grid-column: 4; grid-row: 5;">B304<br>操作室</div>
-    <div class="room" id="B401" style="grid-column: 4; grid-row: 6;">B401<br>普通</div>
+    <div class="room" id="B104" style="grid-column: 4; grid-row: 3;">B104<br></div>
+    <div class="room special" id="B105" style="grid-column: 5; grid-row: 3;">
+  B105<br>回收站
+  <span class="icon entrance">⤵️</span>
+</div>
+
+    <div class="room bridge" id="bridge1" style="grid-column: 6; grid-row: 3;">廊桥</div>
+    <div class="room" id="B201" style="grid-column: 1; grid-row: 4;">B201<br></div>
+    <div class="room special" id="B202" style="grid-column: 2; grid-row: 4;">B202<br>手术室</div>
+    <div class="room" id="B203" style="grid-column: 3; grid-row: 4;">B203<br></div>
+    <div class="room special" id="B204" style="grid-column: 4; grid-row: 4;">B204<br>餐厅</div>
+    <div class="room" id="B205" style="grid-column: 5; grid-row: 4;">B205<br></div>
+    <div class="room special" id="B301" style="grid-column: 1; grid-row: 5;">B301<br>药房</div>
+    <div class="room" id="B302" style="grid-column: 2; grid-row: 5;">B302<br></div>
+    <div class="room spawn" id="B303" style="grid-column: 3; grid-row: 5;">B303<br>出生点</div>
+    <div class="room special" id="B304" style="grid-column: 4; grid-row: 5;">B304<br>操作室</div>
+    <div class="room" id="B305" style="grid-column: 5; grid-row: 5;">B305<br></div>
+    <div class="room bridge" id="bridge2" style="grid-column: 6; grid-row: 5;">廊桥</div>
+
+    <div class="room special" id="B501" style="grid-column: 1 / span 3; grid-row: 6 / span 2;">B501<br>大仓库</div>
+    <div class="room" id="B401" style="grid-column: 4; grid-row: 6;">B401<br></div>
+    <div class="room" id="B402" style="grid-column: 5; grid-row: 6;">B402<br></div>
+    <div class="room" id="B502" style="grid-column: 4; grid-row: 7;">B502<br></div>
+    <div class="room special" id="B503" style="grid-column: 5; grid-row: 7;">
+  B503<br>垃圾场
+  <span class="icon exit">⬆️</span>
+</div>
 
 
-    <div class="room special" id="202" style="grid-column: 7 / span 2; grid-row: 1;">202<br>停机坪</div>
+
+    <div class="room special" id="202" style="grid-column: 7 / span 3; grid-row: 1;">202<br>停机坪</div>
     <div class="room spawn" id="103" style="grid-column: 7; grid-row: 2;">103<br>出生点</div>
-    <div class="room" id="104" style="grid-column: 8; grid-row: 2;">104<br>普通</div>
+    <div class="room" id="104" style="grid-column: 8 / span 2; grid-row: 2;">104<br></div>
+    <div class="room" id="B106" style="grid-column: 7; grid-row: 3;">B106<br></div>
+    <div class="room special" id="B107" style="grid-column: 8 / span 2; grid-row: 3;">B107<br>武器库</div>
+    <div class="room special" id="B206" style="grid-column: 7 / span 3; grid-row: 4;">B206<br>金库</div>
+    <div class="room" id="B306" style="grid-column: 7; grid-row: 5;">B306<br></div>
+    <div class="room spawn" id="B307" style="grid-column: 8; grid-row: 5;">B307<br></div>
+    <div class="room" id="B308" style="grid-column: 9; grid-row: 5;">B308<br></div>
+    <div class="room special" id="B403" style="grid-column: 7; grid-row: 6;">B403<br>传送室</div>
+    <div class="room" id="B404" style="grid-column: 8; grid-row: 6;">B404<br></div>
+    <div class="room" id="B405" style="grid-column: 9; grid-row: 6;">B405<br></div>
+    <div class="room" id="B504" style="grid-column: 7; grid-row: 7;">B504<br></div>
+    <div class="room special" id="B505" style="grid-column: 8 / span 2; grid-row: 7;">B505<br>粮仓</div>
+
+    <div class="room special" id="B601" style="grid-column: 3 / span 2; grid-row: 8;">B601<br>酒窖</div>
+    <div class="room" id="B602" style="grid-column: 5; grid-row: 8;">B602<br></div>
+    <div class="room spawn" id="B603" style="grid-column: 6; grid-row: 8;">B603<br></div>
+    <div class="room" id="B604" style="grid-column: 7; grid-row: 8;">B604<br></div>
+
+    <div class="room special" id="B701" style="grid-column: 5; grid-row: 9;">B701<br>停尸间</div>
+
     <!-- SVG for connections -->
     <svg id="connections"></svg>
   </div>
@@ -97,10 +136,20 @@
       { from: "201", to: "102", type: "ladder" },
       { from: "101", to: "B102", type: "ladder" },
       { from: "102", to: "B104", type: "ladder" },
+      { from: "202", to: "104", type: "ladder" },
+      { from: "103", to: "B106", type: "ladder" },
+      { from: "B102", to: "B201", type: "ladder" },
       { from: "B105", to: "B205", type: "ladder" },
-      { from: "B105", to: "B503", type: "tunnel" },
-      { from: "B205", to: "B305", type: "ladder" },
-      { from: "B304", to: "B401", type: "ladder" }
+      { from: "B106", to: "B206", type: "ladder" },
+      { from: "B204", to: "B305", type: "ladder" },
+      { from: "B206", to: "B308", type: "ladder" },
+      { from: "B304", to: "B401", type: "ladder" },
+      { from: "B307", to: "B404", type: "ladder" },
+      { from: "B402", to: "B503", type: "ladder" },
+      { from: "B405", to: "B505", type: "ladder" },
+      { from: "B501", to: "B601", type: "ladder" },
+      { from: "B504", to: "B604", type: "ladder" },
+      { from: "B602", to: "B701", type: "ladder" },
     ];
 
     function drawConnections() {
@@ -126,6 +175,7 @@
         line.setAttribute("y2", y2);
         line.setAttribute("class", conn.type);
         svg.appendChild(line);
+
       });
     }
 

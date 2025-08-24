@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>选择属性</title>
+</head>
+<body>
+  <h1>分配你的基因点数 (10点)</h1>
+  <form id="attrForm">
+    武力: <input type="number" name="strength" min="0" max="10" value="0"><br>
+    速度: <input type="number" name="speed" min="0" max="10" value="0"><br>
+    负重: <input type="number" name="capacity" min="0" max="10" value="0"><br>
+    <button type="submit">提交</button>
+  </form>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+  const name = params.get("name");
+
+  document.getElementById("attrForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const strength = parseInt(formData.get("strength")) || 0;
+    const speed = parseInt(formData.get("speed")) || 0;
+    const capacity = parseInt(formData.get("capacity")) || 0;
+    const total = strength + speed + capacity;
+
+    if (total !== 10) {
+      alert("You must distribute exactly 10 points!");
+      return;
+    }
+
+    let response = await fetch(`/api/set_attributes/${code}/${name}`, {
+      method: "POST",
+      body: formData
+    });
+    let data = await response.json();
+
+    if (data.error) {
+      alert(data.error);
+    } else {
+      // Redirect to the map once attributes are saved
+      window.location.href = `/game.html?code=${code}&name=${encodeURIComponent(name)}`;
+    }
+  });
+</script>
+
+</body>
+</html>
